@@ -55,9 +55,10 @@ Following only LOD0 should get you ~95% of the intended result. Higher LOD is fo
 perfectionists — down to buying chocolate bars from Brazil if you want.
 
 Lower levels are planned for accessibility, not precision: **LOD-1** (a fixed
-gram/pound batch for a preset yield, e.g. 5 cookies) and **LOD-2** (cups, spoons,
-pinches, mugs). They trade reproducibility for reach and are not written yet — see
-[ROADMAP.md](ROADMAP.md).
+gram/pound batch for exactly 5 cookies) and **LOD-2** (cups, spoons, pinches, mugs,
+also 5 cookies). Both aim at around 70 g baked per cookie, but expect wide variation —
+mug sizes, packing and the cook's hand differ. They trade reproducibility for reach
+and are not written yet — see [ROADMAP.md](ROADMAP.md).
 
 ## Naming
 
