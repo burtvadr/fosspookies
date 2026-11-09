@@ -54,6 +54,11 @@ several depths. Pick the level you need; deeper levels are optional.
 Following only LOD0 should get you ~95% of the intended result. Higher LOD is for
 perfectionists — down to buying chocolate bars from Brazil if you want.
 
+Lower levels are planned for accessibility, not precision: **LOD-1** (a fixed
+gram/pound batch for a preset yield, e.g. 5 cookies) and **LOD-2** (cups, spoons,
+pinches, mugs). They trade reproducibility for reach and are not written yet — see
+[ROADMAP.md](ROADMAP.md).
+
 ## Naming
 
 Separate **what changed** from **which run it was**:
