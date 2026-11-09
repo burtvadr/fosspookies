@@ -212,8 +212,9 @@ afterwards. The credit is for the idea of applying open-source practice to a coo
 recipe. The only copied material is his recipe, vendored below under its original
 license.
 
-His [recipe](recipes/pe7er-recipe.md) is included as a reference under GPL-3.0
-(`LICENSES/GPL-3.0.txt`); this repository's CC BY-SA 4.0 does not apply to it.
+His recipes are included as references under GPL-3.0 (`LICENSES/GPL-3.0.txt`):
+[original](recipes/pe7er-recipe.md) and [vegan](recipes/pe7er-recipe-vegan.md).
+This repository's CC BY-SA 4.0 does not apply to them.
 
 What is different here: LOD0–3 as a versioned standard, batch records with recorded
 deviations, cost and profit tooling, a real business behind it, and native clients.
@@ -224,5 +225,6 @@ deviations, cost and profit tooling, a real business behind it, and native clien
 sell it, keep it open. The logo/name: `Open Source Cookies™`, `© 2026 Open Source
 Cookies contributors` in fine print.
 
-Third-party works keep their own license: [recipes/pe7er-recipe.md](recipes/pe7er-recipe.md)
-is GPL-3.0 only (see `LICENSES/GPL-3.0.txt`).
+Third-party works keep their own license: the pe7er recipes
+([original](recipes/pe7er-recipe.md), [vegan](recipes/pe7er-recipe-vegan.md)) are
+GPL-3.0 only (see `LICENSES/GPL-3.0.txt`).
