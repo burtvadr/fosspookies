@@ -57,6 +57,37 @@ what you used, record the label, and if the supplier reformulates, that becomes 
 dependency version. Exact reproducibility requires the declared reference or an
 equivalent functional spec.
 
+## The chocolate problem
+
+The other ingredients are closer to commodities: flour can be specified by protein
+content, butter by fat, eggs by weight. They drift slowly, and a class specification
+gets you close anywhere in the world.
+
+Chocolate is not a commodity. It is a formulated industrial product — cocoa mass,
+cocoa butter, sugar, milk solids, emulsifiers, vanilla — and every maker uses a
+different bean blend, roast and conching process. The label gives ingredient order
+and cocoa %, not the full composition or how it behaves in dough. A brand can
+reformulate without changing the product name. So "40% chocolate" specifies a
+quantity, not a flavor.
+
+That is the chocolate problem: **the same percentages, followed faithfully in Brazil
+and in China, can produce different cookies** — not because the recipe failed, but
+because one dependency is not specified.
+
+What we do about it today:
+
+- treat chocolate as a **versioned dependency** — brand, product, label, cocoa %,
+  date; a reformulation is a new version, not a silent edit;
+- LOD1 names the class (e.g. "65–72% couverture, no compound fat"), LOD2 pins the
+  exact product;
+- record deviations instead of hiding them (CDE in the b1 record).
+
+What would actually solve it: **open chocolate** — a public specification for
+composition ranges and process (fermentation, roast, conching), plus a reference
+product anyone can make or buy. Even then, harvest and fermentation vary; the spec
+would define acceptable ranges and tests, the way engineering standards do. That is
+the long game, and it is only half a joke.
+
 ## Honesty rule
 
 > Transparency about uncertainty is more valuable than fabricated precision.

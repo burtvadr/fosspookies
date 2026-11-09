@@ -63,7 +63,8 @@ the oven is too low — see the thermal notes in the batch record.
 
 Chocolate is a versioned external dependency: no open chocolate exists yet, so record
 brand, product, ingredient order, cocoa % and date. If the supplier changes it, cut a
-new dependency version instead of pretending nothing happened.
+new dependency version instead of pretending nothing happened. See
+[the chocolate problem](../README.md#the-chocolate-problem).
 
 ## Replication guidance
 
