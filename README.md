@@ -41,8 +41,8 @@ Everything is free to make, sell and remix — see [License](#license).
 
 ## Levels of Detail (LOD)
 
-A recipe is published at several depths. Pick the level you care about; deeper levels
-are optional.
+LOD means *level of detail*, borrowed from 3D graphics: the same recipe published at
+several depths. Pick the level you need; deeper levels are optional.
 
 | Level | What you get | What it takes |
 |-------|--------------|---------------|
