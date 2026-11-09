@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="40">
+  <defs>
+    <pattern id="cookie-crumbs" width="200" height="40" patternUnits="userSpaceOnUse">
+      
+      <path d="M10,20 Q12,18 14,21 T10,23 Z" fill="#C19A6B" />
+      <circle cx="45" cy="19" r="2.5" fill="#C19A6B" />
+      <path d="M95,21 Q97,18 100,20 T96,24 Z" fill="#C19A6B" />
+      <path d="M130,20 Q132,17 134,19 T131,23 Z" fill="#C19A6B" />
+      <path d="M185,19 Q188,17 189,20 T186,22 Z" fill="#C19A6B" />
+      
+      <path d="M35,21 Q37,19 39,22 T36,24 Z" fill="#D2A679" />
+      <circle cx="75" cy="22" r="1.5" fill="#D2A679" />
+      <path d="M80,19 Q83,18 82,22 Q79,20 80,19" fill="#D2A679" />
+      <circle cx="145" cy="18" r="2" fill="#D2A679" />
+      <circle cx="195" cy="23" r="1.5" fill="#D2A679" />
+      <path d="M165,18 Q167,17 168,19 T164,20 Z" fill="#D2A679" />
+
+      <circle cx="15" cy="22" r="1" fill="#8B5A2B" />
+      <path d="M55,23 L56,21 L58,22 L57,24 Z" fill="#8B5A2B" />
+      <circle cx="115" cy="24" r="1" fill="#8B5A2B" />
+      <path d="M160,22 L162,23 L161,25 L159,24 Z" fill="#8B5A2B" />
+      <circle cx="88" cy="17" r="1.2" fill="#8B5A2B" />
+
+      <path d="M25,18 L27,19 L26,21 Z" fill="#3E2723" />
+      <circle cx="68" cy="20" r="1" fill="#3E2723" />
+      <path d="M105,17 L107,16 L109,18 L106,19 Z" fill="#3E2723" />
+      <circle cx="175" cy="20" r="1.5" fill="#3E2723" />
+      <path d="M5,19 L7,18 L6,20 Z" fill="#3E2723" />
+      <circle cx="123" cy="18" r="0.8" fill="#3E2723" />
+
+      <circle cx="8" cy="24" r="0.5" fill="#C19A6B" />
+      <circle cx="30" cy="17" r="0.5" fill="#D2A679" />
+      <circle cx="50" cy="25" r="0.5" fill="#8B5A2B" />
+      <circle cx="85" cy="23" r="0.5" fill="#D2A679" />
+      <circle cx="110" cy="21" r="0.5" fill="#C19A6B" />
+      <circle cx="140" cy="24" r="0.5" fill="#8B5A2B" />
+      <circle cx="155" cy="19" r="0.5" fill="#3E2723" />
+      <circle cx="190" cy="17" r="0.5" fill="#D2A679" />
+    </pattern>
+  </defs>
+
+  <rect x="0" y="0" width="100%" height="40" fill="url(#cookie-crumbs)" />
+</svg>

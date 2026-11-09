@@ -1,0 +1,168 @@
+#!/bin/sh
+# cost - batch cost, cost per cookie, suggested price.
+# Prices are private: kept in costs.local (gitignored), never committed.
+# --public prints only totals, no per-ingredient prices: safe to share.
+set -eu
+
+ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+. "$ROOT/bin/lib.sh"
+FORMULA=$ROOT/recipes/core.md
+PRICES=$ROOT/costs.local
+
+usage() {
+  cat <<'EOF'
+cost - what does a batch cost, and what should it sell for?
+
+  cost [total_dough_g] [--public]
+  cost 1200            15 cookies of 80 g
+  cost 1200 --public   print only totals, safe to share
+
+Asks: cookie count, target margin %, hours of work, days to sell,
+total cash spent (optional — shows what cookies cost if leftovers count).
+Prices are asked once and saved to costs.local (gitignored, private).
+Use the same ingredient names as recipes/core.md.
+
+Typical flow:
+  bin/cookie 70 -b -n 15     # 15 cookies of 70 g baked -> grams + total
+  bin/cost 1200             # plug in costs.local -> price, profit, per hour
+EOF
+}
+
+public=no
+for arg in "$@"; do
+  [ "$arg" = "--public" ] && public=yes
+done
+case ${1:-} in
+  -h | --help) usage; exit 0 ;;
+esac
+total=${1:-1060}
+isnum "$total" || { printf 'cost: dough weight must be a number of grams\n' >&2; exit 2; }
+
+have=''
+if [ -r "$PRICES" ]; then
+  have=$(grep -v '^[[:space:]]*#' "$PRICES" | grep -v '^[[:space:]]*$')
+fi
+
+ROWS=$(formula "$FORMULA")
+
+# ask for prices we do not have yet
+missing=$(printf '%s\n' "$ROWS" | awk -v have="$have" '
+  BEGIN {
+    n = split(have, l, "\n")
+    for (i = 1; i <= n; i++) { nm = l[i]; sub(/ [^ ]*$/, "", nm); price[tolower(nm)] = 1 }
+  }
+  { nm = $0; sub(/ [^ ]*$/, "", nm); if (!(tolower(nm) in price)) print nm }')
+
+if [ -n "$missing" ]; then
+  printf 'price per kg for (private, will be saved in costs.local):\n' >&2
+  tmp=$(mktemp)
+  trap 'rm -f "$tmp"' EXIT
+  printf '%s\n' "$missing" >"$tmp"
+  exec 3<"$tmp"
+  while IFS= read -r nm <&3; do
+    [ -n "$nm" ] || continue
+    printf '  %s: ' "$nm" >&2
+    read -r v || v=''
+    v=${v:-0}
+    isnum "$v" || { printf 'cost: %s needs a numeric price\n' "$nm" >&2; exit 2; }
+    have=$(printf '%s\n%s %s' "$have" "$nm" "$v")
+  done
+  exec 3<&-
+fi
+
+if [ ! -r "$PRICES" ]; then
+  printf 'save these prices to costs.local? [y/N] ' >&2
+  read -r ans || ans=''
+  case $ans in
+    y | Y | yes)
+      {
+        printf '# private ingredient prices (price per kg) - gitignored\n'
+        printf '%s\n' "$have"
+      } >"$PRICES"
+      printf 'saved %s\n' "${PRICES#"$ROOT"/}" >&2
+      ;;
+  esac
+fi
+
+ask 'How many cookies? [13] ' 13
+count=$REPLY
+ask 'Target margin % [50] ' 50
+margin=$REPLY
+ask 'Hours of work? [1] ' 1
+hours=$REPLY
+ask 'Days to sell them all? [7] ' 7
+days=$REPLY
+ask 'Total cash spent on ingredients (0 to skip)? [0] ' 0
+spent=$REPLY
+isnum "$count" || { printf 'cost: cookie count must be a number\n' >&2; exit 2; }
+isnum "$margin" || { printf 'cost: margin must be a number\n' >&2; exit 2; }
+isnum "$hours" || { printf 'cost: hours must be a number\n' >&2; exit 2; }
+isnum "$days" || { printf 'cost: days must be a number\n' >&2; exit 2; }
+isnum "$spent" || { printf 'cost: spent must be a number\n' >&2; exit 2; }
+if ! awk -v s="$spent" 'BEGIN { exit !(s >= 0) }'; then
+  printf 'cost: spent must be positive\n' >&2
+  exit 2
+fi
+if ! awk -v m="$margin" 'BEGIN { exit !(m >= 0 && m < 100) }'; then
+  printf 'cost: margin must be between 0 and 99\n' >&2
+  exit 2
+fi
+if ! awk -v h="$hours" -v d="$days" 'BEGIN { exit !(h > 0 && d > 0) }'; then
+  printf 'cost: hours and days must be positive\n' >&2
+  exit 2
+fi
+
+printf '%s\n' "$ROWS" | awk -v total="$total" -v count="$count" -v margin="$margin" \
+  -v hours="$hours" -v days="$days" -v spent="$spent" -v public="$public" -v have="$have" '
+  BEGIN {
+    n = split(have, l, "\n")
+    for (i = 1; i <= n; i++) {
+      v = l[i]; sub(/^.* /, "", v); nm = l[i]; sub(/ [^ ]*$/, "", nm)
+      price[tolower(nm)] = v + 0
+    }
+  }
+  {
+    name[NR] = $0; sub(/ [^ ]*$/, "", name[NR])
+    g[NR] = $NF / 100 * total
+    pk = price[tolower(name[NR])]
+    if (!(tolower(name[NR]) in price)) {
+      printf "  (no price for %s, counted as 0)\n", name[NR] > "/dev/stderr"
+    }
+    p[NR] = (pk == "" ? 0 : pk)
+    c[NR] = g[NR] / 1000 * p[NR]
+  }
+  END {
+    tc = 0
+    for (i = 1; i <= NR; i++) tc += c[i]
+    cpc = tc / count
+    pr = cpc / (1 - margin / 100)
+    pf = pr - cpc
+    pph = pf * count / hours
+    ppd = pf * count / days
+    if (public == "yes") {
+      printf "batch cost: %.2f\n", tc
+      printf "cost per cookie: %.2f\n", cpc
+      printf "suggested price (@%.0f%% margin): %.2f\n", margin, pr
+      printf "profit per cookie: %.2f\n", pf
+      printf "profit per batch: %.2f\n", pf * count
+    } else {
+      printf "%-26s %8s %10s %8s\n", "ingredient", "g", "price/kg", "cost"
+      for (i = 1; i <= NR; i++)
+        printf "%-26s %8.1f %10.2f %8.2f\n", name[i], g[i], p[i], c[i]
+      printf "%-26s %8.1f %10s %8.2f\n", "Total", total, "", tc
+      printf "cost per cookie: %.2f\n", cpc
+      printf "suggested price (@%.0f%% margin): %.2f\n", margin, pr
+      printf "profit per cookie: %.2f\n", pf
+      printf "profit per batch: %.2f\n", pf * count
+      printf "profit per hour (%.1f h work): %.2f\n", hours, pph
+      printf "profit per day (%.1f days to sell): %.2f\n", days, ppd
+      if (spent + 0 > 0) {
+        sunk_cpc = spent / count
+        sunk_pr = sunk_cpc / (1 - margin / 100)
+        printf "--- if you count everything you spent ---\n"
+        printf "sunk cost per cookie: %.2f\n", sunk_cpc
+        printf "sunk price (@%.0f%% margin): %.2f\n", margin, sunk_pr
+        printf "stuck in leftovers: %.2f\n", spent - tc
+      }
+    }
+  }'

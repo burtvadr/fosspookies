@@ -1,0 +1,9 @@
+#!/bin/sh
+# pending - list everything in the docs still waiting to be filled in
+set -eu
+
+ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+
+grep -rn -E '_pending_|_{3,}|^[[:space:]]*-[[:space:]]*\[[[:space:]]\][[:space:]]*$' \
+  "$ROOT/README.md" "$ROOT/recipes" ||
+  printf 'nothing pending\n'

@@ -1,0 +1,97 @@
+#!/bin/sh
+# new-batch - scaffold the next batch record in recipes/
+set -eu
+
+ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+
+case $# in
+  1) version=v0.1; batch=$1 ;;
+  2) batch=$1; version=$2 ;;
+  *)
+    printf 'usage: new-batch <batch-number> [version]   e.g. new-batch 2  or  new-batch 1 v0.2\n' >&2
+    exit 2
+    ;;
+esac
+
+batch=${batch#b}
+case $batch in '' | *[!0-9]*) printf 'new-batch: batch number must be numeric\n' >&2; exit 2 ;; esac
+case $version in v[0-9]*) ;; *) printf 'new-batch: version looks like %s, expected v0.1 style\n' "$version" >&2; exit 2 ;; esac
+
+file=$ROOT/recipes/core-batch-$version-b$batch.md
+if [ -e "$file" ]; then
+  printf 'new-batch: %s already exists\n' "${file#"$ROOT"/}" >&2
+  exit 1
+fi
+
+date=$(date +%F)
+cat >"$file" <<EOF
+# core-batch-$version-b$batch
+
+Batch $batch of the CORE recipe line, executed $date.
+
+Formula: [core.md](core.md)
+
+## Status
+
+| Field | Value |
+|-------|-------|
+| Date | $date |
+| Operator | _pending_ |
+| Classification | _pending_ |
+| Reproducibility | _pending_ |
+
+## Batch summary
+
+| Field | Value |
+|-------|-------|
+| Total raw dough mass | _pending_ (see \`bin/cookie\`) |
+| Target raw cookie mass | _pending_ g |
+| Number of cookies | _pending_ |
+| Rest | _pending_ |
+| Ambient | _pending_ |
+
+## Process workflow
+
+_Mixing, rest, portioning: what actually happened_
+
+## Oven & surfaces
+
+_Preheat, dish/tray material and position, grease_
+
+## Baking results
+
+| | Dish A | Dish B |
+|---|--------|--------|
+| Bake duration | _pending_ | _pending_ |
+| Doneness | _pending_ | _pending_ |
+| Raw center present | _pending_ | _pending_ |
+
+## Deviations
+
+_Report anything unexpected, with a code if it deserves one
+(see CDE / TER / HCI in [core-batch-v0.1-b1.md](core-batch-v0.1-b1.md))_
+
+## Ingredient registry
+
+_Pending_
+
+## Physical measurements
+
+_Raw:_ diameter _____ height _____
+_Baked:_ diameter _____ height _____ mass _____ moisture loss _____
+
+## Sensory evaluation
+
+Edge crispness __/10 · Center chew __/10 · Sweetness __/10 · Chocolate balance __/10
+Notes: _____
+
+## Lessons learned
+
+-
+
+## Next batch
+
+- [ ]
+EOF
+
+printf 'created recipes/%s\n' "$(basename "$file")"
