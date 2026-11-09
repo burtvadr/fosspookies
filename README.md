@@ -247,8 +247,10 @@ His recipes are included as references under GPL-3.0 (`LICENSES/GPL-3.0.txt`):
 [original](recipes/pe7er-recipe.md) and [vegan](recipes/pe7er-recipe-vegan.md).
 This repository's CC BY-SA 4.0 does not apply to them.
 
-What is different here: LOD0–3 as a versioned standard, batch records with recorded
-deviations, cost and profit tooling, a real business behind it, and native clients.
+What is different here: the recipe is a **versioned standard**, not a one-off post.
+It ships at four levels of detail — from percentages only (LOD0) to full process
+fidelity (LOD3) — every real bake gets a batch record with its deviations, and there
+is cost/profit tooling, a real business behind it, and native clients planned.
 
 ## License
 
