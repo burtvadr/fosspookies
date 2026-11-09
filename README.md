@@ -90,13 +90,42 @@ POSIX `sh` (tested under dash), only `awk`/`grep` needed:
   baked weight, and whether chocolate is a percent or fixed grams, then prints the
   gram table. Reads percentages straight from the LOD0 table in
   [recipes/core.md](recipes/core.md), so editing the doc is all it takes to change
-  the formula. `bin/cookie 100 -c 30g` skips the questions; `bin/cookie --selftest`
-  checks the math.
+  the formula. `RECIPE=path/to/recipe.md` runs the same math on any other table.
+  `bin/cookie 100 -c 30g` skips the questions; `bin/cookie --selftest` checks the math.
 - **`bin/new-batch 2`** — scaffolds `recipes/core-batch-v0.1-b2.md` with the
   record sections ready to fill.
 - **`bin/pending`** — lists every `_pending_` and blank left in the docs.
 - **`bin/cost`** — batch cost, cost per cookie, suggested price. `bin/cost 1040` for
-  13 cookies of 80 g; `--public` prints only totals.
+  13 cookies of 80 g; `--public` prints only totals. Accepts `RECIPE=` too.
+
+## Any recipe, not only cookies
+
+The math scales one flat table, whatever the rows are called:
+
+```
+| Ingredient | % |
+|------------|--:|
+```
+
+Percentages sum to 100 and the tools do the rest. A vegan cookie (no eggs),
+gummies, or a pizza dough are just different rows in a new recipe file:
+
+```sh
+RECIPE=recipes/vegan.md bin/cookie 80 -n 12   # grams
+RECIPE=recipes/vegan.md bin/cost 960          # cost and price
+```
+
+New ingredient names are asked for a price once, then added to `costs.local`.
+
+Two limits, said plainly:
+
+- **One flat mix per batch.** Composite recipes (a whole pizza is dough + sauce +
+  toppings) need nesting, which is not implemented.
+- **Yield loss is per tool.** `-b` converts baked→raw with the cookie b1 ratio;
+  other processes (gummy curing, bread proofing) would need their own factor.
+
+`-c` (chocolate as percent or grams) is a cookie convenience; a recipe with no
+chocolate rows ignores it.
 
 ## Costs & profits
 

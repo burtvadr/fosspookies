@@ -6,7 +6,7 @@ set -eu
 
 ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
 . "$ROOT/bin/lib.sh"
-FORMULA=$ROOT/recipes/core.md
+FORMULA=${RECIPE:-$ROOT/recipes/core.md}
 PRICES=$ROOT/costs.local
 
 usage() {
@@ -20,7 +20,9 @@ cost - what does a batch cost, and what should it sell for?
 Asks: cookie count, target margin %, hours of work, days to sell,
 total cash spent (optional — shows what cookies cost if leftovers count).
 Prices are asked once and saved to costs.local (gitignored, private).
-Use the same ingredient names as recipes/core.md.
+Use the same ingredient names as the recipe file.
+
+  RECIPE=recipes/vegan.md bin/cost 960   price another recipe with the same table format
 
 Typical flow:
   bin/cookie 70 -b -n 15     # 15 cookies of 70 g baked -> grams + total
@@ -44,6 +46,7 @@ if [ -r "$PRICES" ]; then
 fi
 
 ROWS=$(formula "$FORMULA")
+[ -n "$ROWS" ] || { printf 'cost: no percentages found in %s\n' "$FORMULA" >&2; exit 2; }
 
 # ask for prices we do not have yet
 missing=$(printf '%s\n' "$ROWS" | awk -v have="$have" '
@@ -53,7 +56,9 @@ missing=$(printf '%s\n' "$ROWS" | awk -v have="$have" '
   }
   { nm = $0; sub(/ [^ ]*$/, "", nm); if (!(tolower(nm) in price)) print nm }')
 
+added=no
 if [ -n "$missing" ]; then
+  added=yes
   printf 'price per kg for (private, will be saved in costs.local):\n' >&2
   tmp=$(mktemp)
   trap 'rm -f "$tmp"' EXIT
@@ -70,7 +75,7 @@ if [ -n "$missing" ]; then
   exec 3<&-
 fi
 
-if [ ! -r "$PRICES" ]; then
+if [ "$added" = yes ] || [ ! -r "$PRICES" ]; then
   printf 'save these prices to costs.local? [y/N] ' >&2
   read -r ans || ans=''
   case $ans in

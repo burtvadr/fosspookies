@@ -1,15 +1,15 @@
 #!/bin/sh
-# cookie - scale the CORE formula to a batch or a single cookie.
-# Percentages are read from the LOD0 table in recipes/core.md: edit them there, not here.
+# cookie - scale any recipe's LOD0 table to a batch or a single portion.
+# Default recipe: recipes/core.md. Override with RECIPE=path/to/recipe.md.
 set -eu
 
 ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
 . "$ROOT/bin/lib.sh"
-FORMULA=$ROOT/recipes/core.md
+FORMULA=${RECIPE:-$ROOT/recipes/core.md}
 
 usage() {
   cat <<'EOF'
-cookie - build a batch from the CORE formula
+cookie - build a batch from a recipe's LOD0 table
 
   cookie                 interactive, it asks the questions
   cookie 100             one 100 g raw cookie
@@ -17,6 +17,7 @@ cookie - build a batch from the CORE formula
   cookie 100 -b          100 g is the baked weight (b1 measured 80 raw -> 70 baked)
   cookie 100 -c 30g      30 g of chocolate for the whole batch
   cookie 100 -c 40       chocolate as a percent of the dough (default 40)
+  RECIPE=recipes/vegan.md bin/cookie 100   same math, another recipe
   cookie --selftest      check that the doc percentages sum to 100 and the math holds
 
 Rows are rounded to 0.1 g; the Total line is exact.
@@ -41,9 +42,15 @@ render() {
       else non_choc_pct += $NF
     }
     END {
-      if (choc ~ /g$/) { sub(/g$/, "", choc); choc_g = choc + 0 }
-      else choc_g = T * (choc + 0) / 100
-      rest = T - choc_g
+      if (choc_pct == 0) {
+        # no chocolate rows: -c is meaningless, scale the whole table to T
+        choc_g = 0
+        rest = T
+      } else {
+        if (choc ~ /g$/) { sub(/g$/, "", choc); choc_g = choc + 0 }
+        else choc_g = T * (choc + 0) / 100
+        rest = T - choc_g
+      }
       if (T <= 0 || rest < 0) {
         printf "cookie: bad weight or chocolate amount (more chocolate than dough)\n" > "/dev/stderr"
         exit 1
@@ -88,6 +95,20 @@ selftest() {
     fail=1
   fi
 
+  # a recipe with no chocolate rows must ignore -c and still total T
+  tmp=$(mktemp)
+  printf '%s\n' '# TEST' '' '| Ingredient | % |' '|------------|--:|' \
+    '| Sugar | 60% |' '| Water | 40% |' >"$tmp"
+  saved=$ROWS
+  ROWS=$(formula "$tmp")
+  out=$(render 100 40 "test")
+  ROWS=$saved
+  rm -f "$tmp"
+  if ! printf '%s\n' "$out" | awk '$1 == "Total" { ok = ($NF == "100.0g") } END { exit !ok }'; then
+    printf 'FAIL: a recipe without chocolate should ignore -c and total 100.0 g\n' >&2
+    fail=1
+  fi
+
   # end to end, flags after the weight: 13 x 80 g with 30 g of chocolate for the batch
   out=$("$0" 80 -n 13 -c 30g)
   if ! printf '%s\n' "$out" | awk '
@@ -106,7 +127,7 @@ selftest() {
 
 [ -r "$FORMULA" ] || die "cannot read $FORMULA"
 ROWS=$(formula "$FORMULA")
-[ -n "$ROWS" ] || die "no percentages found in the LOD0 table of recipes/core.md"
+[ -n "$ROWS" ] || die "no percentages found in the LOD0 table of $FORMULA"
 
 case ${1:-} in
   --selftest)
