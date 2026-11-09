@@ -206,9 +206,13 @@ prices. Until then, the numbers stay on your machine.
 Martin, 2024, GPL-3.0 — is an earlier and simpler take on the same idea: one
 shortbread recipe, a vegan variant, and an open-source license.
 
-This project was started independently and found that repository afterwards. The
-credit is for the idea of applying open-source practice to a cookie recipe; nothing
-here is copied from it, which is why the licenses differ.
+This project's own recipe was developed independently; the repository was found
+afterwards. The credit is for the idea of applying open-source practice to a cookie
+recipe. The only copied material is his recipe, vendored below under its original
+license.
+
+His [recipe](recipes/pe7er-recipe.md) is included as a reference under GPL-3.0
+(`LICENSES/GPL-3.0.txt`); this repository's CC BY-SA 4.0 does not apply to it.
 
 What is different here: LOD0–3 as a versioned standard, batch records with recorded
 deviations, cost and profit tooling, a real business behind it, and native clients.
@@ -218,3 +222,6 @@ deviations, cost and profit tooling, a real business behind it, and native clien
 [CC BY-SA 4.0](LICENSE) — the GPL spirit applied to documentation: use it, remix it,
 sell it, keep it open. The logo/name: `Open Source Cookies™`, `© 2026 Open Source
 Cookies contributors` in fine print.
+
+Third-party works keep their own license: [recipes/pe7er-recipe.md](recipes/pe7er-recipe.md)
+is GPL-3.0 only (see `LICENSES/GPL-3.0.txt`).
