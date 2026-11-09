@@ -1,4 +1,5 @@
 #!/bin/sh
+# SPDX-License-Identifier: 0BSD
 # cookie - scale any recipe's LOD0 table to a batch or a single portion.
 # Default recipe: recipes/core-recipe-v0.1.md. Override with RECIPE=path/to/recipe.md.
 set -eu

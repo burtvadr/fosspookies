@@ -1,5 +1,17 @@
 # fosspookies
 
+<p align="center">
+  <img src="artwork/spookie_open_source_cookies.svg" alt="Open Source Cookies" width="480">
+</p>
+
+<p align="center">
+  <img src="artwork/spookie.svg" alt="Spookie" width="96">
+  &nbsp;&nbsp;
+  <img src="artwork/cookiespookie.svg" alt="Cookiespookie" width="96">
+  &nbsp;&nbsp;
+  <img src="artwork/cookie.svg" alt="Cookie" width="96">
+</p>
+
 **Open Source Cookies** — open, reproducible cookie recipes and food standards.
 
 > Open Source Cookies é uma iniciativa aberta dedicada ao estudo e à documentação
@@ -15,6 +27,17 @@ publish that study so it is freely and identically reproducible, commercial or n
 It is also the production standard behind a small real-world cookie business,
 currently in progress — which is why batches, costs and deviations are recorded
 rather than estimated.
+
+## Start here
+
+1. **Make the cookies.** Follow [core-recipe-v0.1.md](recipes/core-recipe-v0.1.md).
+   LOD0 is only percentages — a scale is all the equipment you need.
+2. **Scale a batch.** `bin/cookie 80 -n 15` prints the grams of every ingredient
+   for 15 cookies of 80 g raw.
+3. **Price them.** `bin/cost 1200` prints cost per cookie, suggested price and
+   profit. Prices stay private in `costs.local` (gitignored).
+
+Everything is free to make, sell and remix — see [License](#license).
 
 ## Levels of Detail (LOD)
 
@@ -117,6 +140,14 @@ Selling cookies and selling modified versions is explicitly fine.
   `english/` reserved, not started
 - `references/` — icon sources used in the labels
 - `descrição` — short Portuguese text for the GitHub repo description
+
+<p align="center">
+  <img src="package/portugues/svg/front_label_spookie.svg" alt="Portuguese package label" width="240">
+</p>
+
+All of it is free to use: print the labels, share the files, sell cookies with them.
+Media is CC BY-SA 4.0 — keep the attribution and share modifications under the same
+license. The characters themselves are public domain.
 
 ## Tools
 
@@ -221,10 +252,16 @@ deviations, cost and profit tooling, a real business behind it, and native clien
 
 ## License
 
-[CC BY-SA 4.0](LICENSE) — the GPL spirit applied to documentation: use it, remix it,
-sell it, keep it open. The logo/name: `Open Source Cookies™`, `© 2026 Open Source
-Cookies contributors` in fine print.
+Dual licensed by kind of work:
 
-Third-party works keep their own license: the pe7er recipes
-([original](recipes/pe7er-recipe.md), [vegan](recipes/pe7er-recipe-vegan.md)) are
-GPL-3.0 only (see `LICENSES/GPL-3.0.txt`).
+| What | License | Text |
+|------|---------|------|
+| Code (`bin/`) | **0BSD** — do anything, no attribution required | [LICENSES/0BSD.txt](LICENSES/0BSD.txt) |
+| Text, docs, artwork, media | **CC BY-SA 4.0** — use, remix, sell; credit and keep it open | [LICENSES/CC-BY-SA-4.0.txt](LICENSES/CC-BY-SA-4.0.txt) |
+| pe7er recipes | **GPL-3.0** — their original license | [LICENSES/GPL-3.0.txt](LICENSES/GPL-3.0.txt) |
+
+The characters are public domain: no trademark, no character-IP claim. The specific
+artwork files are CC BY-SA 4.0.
+
+The project name: `Open Source Cookies™`, `© 2026 Open Source Cookies contributors`
+in fine print.

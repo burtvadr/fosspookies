@@ -1,4 +1,5 @@
 #!/bin/sh
+# SPDX-License-Identifier: 0BSD
 # new-batch - scaffold the next batch record in recipes/
 set -eu
 

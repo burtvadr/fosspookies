@@ -1,4 +1,5 @@
 #!/bin/sh
+# SPDX-License-Identifier: 0BSD
 # pending - list everything in the docs still waiting to be filled in
 set -eu
 

@@ -1,4 +1,5 @@
 #!/bin/sh
+# SPDX-License-Identifier: 0BSD
 # cost - batch cost, cost per cookie, suggested price.
 # Prices are private: kept in costs.local (gitignored), never committed.
 # --public prints only totals, no per-ingredient prices: safe to share.
