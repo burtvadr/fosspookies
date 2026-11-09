@@ -1,4 +1,4 @@
-# CORE
+# CORE — recipe v0.1
 
 Canonical formulation for the Open Source Cookies reference cookie.
 Total dough mass normalized to 100%.

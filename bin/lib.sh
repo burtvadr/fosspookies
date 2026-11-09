@@ -1,6 +1,6 @@
 # shared helpers for bin/ scripts (POSIX sh)
 
-# rows of the LOD0 table in recipes/core.md, as "Name NN%"
+# rows of the LOD0 table in recipes/core-recipe-v0.1.md, as "Name NN%"
 formula() {
   awk -F'|' '
     NF == 4 && $3 ~ /%[ \t]*$/ && $2 !~ /Ingredient/ && $0 !~ /Total/ {

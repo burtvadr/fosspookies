@@ -1,11 +1,11 @@
 #!/bin/sh
 # cookie - scale any recipe's LOD0 table to a batch or a single portion.
-# Default recipe: recipes/core.md. Override with RECIPE=path/to/recipe.md.
+# Default recipe: recipes/core-recipe-v0.1.md. Override with RECIPE=path/to/recipe.md.
 set -eu
 
 ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
 . "$ROOT/bin/lib.sh"
-FORMULA=${RECIPE:-$ROOT/recipes/core.md}
+FORMULA=${RECIPE:-$ROOT/recipes/core-recipe-v0.1.md}
 
 usage() {
   cat <<'EOF'

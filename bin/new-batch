@@ -29,7 +29,7 @@ cat >"$file" <<EOF
 
 Batch $batch of the CORE recipe line, executed $date.
 
-Formula: [core.md](core.md)
+Formula: [core-recipe-$version.md](core-recipe-$version.md)
 
 ## Status
 

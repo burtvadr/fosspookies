@@ -6,7 +6,7 @@ set -eu
 
 ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
 . "$ROOT/bin/lib.sh"
-FORMULA=${RECIPE:-$ROOT/recipes/core.md}
+FORMULA=${RECIPE:-$ROOT/recipes/core-recipe-v0.1.md}
 PRICES=$ROOT/costs.local
 
 usage() {

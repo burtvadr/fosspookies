@@ -31,7 +31,7 @@ imperfect — the historical baseline future refinements build on.
 | Rest | 24 h refrigerated |
 | Ambient | winter, cold oven despite preheat |
 
-Formula: [core.md](core.md) — kept fixed.
+Formula: [core-recipe-v0.1.md](core-recipe-v0.1.md) — kept fixed.
 
 ## Process workflow
 

@@ -36,10 +36,11 @@ perfectionists — down to buying chocolate bars from Brazil if you want.
 Separate **what changed** from **which run it was**:
 
 ```
-<recipe-line>-v<version>-b<batch>
+<recipe-line>-recipe-v<version>
+<recipe-line>-batch-v<version>-b<batch>
 ```
 
-- `core-batch-v0.1` — the recipe definition (`v0.1` = pre-1.0, still moving)
+- `core-recipe-v0.1` — the recipe definition (`v0.1` = pre-1.0, still moving)
 - `core-batch-v0.1-b1` — the first physical execution of that definition
 
 Version = the recipe changed. Batch = same recipe, different execution.
@@ -47,7 +48,7 @@ Hyphens only, lowercase `v`, no underscores.
 
 ## Formulation
 
-The reference formula lives in [recipes/core.md](recipes/core.md).
+The reference formula lives in [recipes/core-recipe-v0.1.md](recipes/core-recipe-v0.1.md).
 The first documented run lives in [recipes/core-batch-v0.1-b1.md](recipes/core-batch-v0.1-b1.md).
 
 Documented ingredients are tiered, so nobody is forced to chase exact brands:
@@ -124,8 +125,8 @@ POSIX `sh` (tested under dash), only `awk`/`grep` needed:
 - **`bin/cookie`** — interactive recipe calculator. It asks how many cookies, raw or
   baked weight, and whether chocolate is a percent or fixed grams, then prints the
   gram table. Reads percentages straight from the LOD0 table in
-  [recipes/core.md](recipes/core.md), so editing the doc is all it takes to change
-  the formula. `RECIPE=path/to/recipe.md` runs the same math on any other table.
+  [recipes/core-recipe-v0.1.md](recipes/core-recipe-v0.1.md), so editing the doc is
+  all it takes to change the formula. `RECIPE=path/to/recipe.md` runs the same math on any other table.
   `bin/cookie 100 -c 30g` skips the questions; `bin/cookie --selftest` checks the math.
 - **`bin/new-batch 2`** — scaffolds `recipes/core-batch-v0.1-b2.md` with the
   record sections ready to fill.
