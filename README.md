@@ -12,6 +12,10 @@ documented formulation — free to make, free to sell, free to market as open/fr
 Part of the *Alimentos Abertos* (open food) idea: study food and its production, and
 publish that study so it is freely and identically reproducible, commercial or not.
 
+It is also the production standard behind a small real-world cookie business,
+currently in progress — which is why batches, costs and deviations are recorded
+rather than estimated.
+
 ## Levels of Detail (LOD)
 
 A recipe is published at several depths. Pick the level you care about; deeper levels
@@ -158,12 +162,56 @@ Two limits, said plainly:
 `-c` (chocolate as percent or grams) is a cookie convenience; a recipe with no
 chocolate rows ignores it.
 
+## Clients
+
+The core is data and a contract, not a UI. Planned native clients:
+
+| Platform | Toolkit | Guideline | Status |
+|----------|---------|-----------|--------|
+| GNOME / Linux | GTK 4 | [GNOME HIG](https://developer.gnome.org/hig/) | planned |
+| KDE / Linux | Qt 6 | [KDE HIG](https://develop.kde.org/hig/) | planned |
+| Windows | WinUI 3 (Windows App SDK) | [Windows design](https://learn.microsoft.com/windows/apps/design/) | planned |
+| Apple | SwiftUI | [Apple HIG](https://developer.apple.com/design/human-interface-guidelines/) | planned |
+| Android | Jetpack Compose | [Material 3 / Android design](https://developer.android.com/design) | planned |
+| Web | browser | WCAG 2.2 AA + web conventions | planned |
+
+Each client should look and behave like a native app on its platform. Qt has no
+single vendor HIG, so the KDE one is the reference.
+
+### One core, native shells
+
+Clients do not own recipe logic. The centralized piece is this contract, not a shared
+UI toolkit:
+
+- **input:** a recipe table (`| Ingredient | % |`) and a batch size;
+- **output:** grams per ingredient, cost, price and profit — the same numbers
+  `bin/cookie` and `bin/cost` print today;
+- **verification:** shared fixtures (the existing `--selftest` cases) that every
+  client must pass.
+
+The shell scripts are the reference implementation. A client may call them,
+reimplement the math natively, or share a core library — as long as it passes the
+fixtures. Porting cost stays in the UI, where it belongs.
+
 ## Costs & profits
 
 Prices live in `costs.local`, which is gitignored: **costs and profits are private
 until someone asks for them to be public** — in person at a sale, or online. If that
 ever happens, `bin/cost --public` prints a shareable summary with no per-ingredient
 prices. Until then, the numbers stay on your machine.
+
+## Prior art & credits
+
+[pe7er/open-source-cookies](https://github.com/pe7er/open-source-cookies) — Peter
+Martin, 2024, GPL-3.0 — is an earlier and simpler take on the same idea: one
+shortbread recipe, a vegan variant, and an open-source license.
+
+This project was started independently and found that repository afterwards. The
+credit is for the idea of applying open-source practice to a cookie recipe; nothing
+here is copied from it, which is why the licenses differ.
+
+What is different here: LOD0–3 as a versioned standard, batch records with recorded
+deviations, cost and profit tooling, a real business behind it, and native clients.
 
 ## License
 
